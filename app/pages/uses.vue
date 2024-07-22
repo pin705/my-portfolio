@@ -1,0 +1,95 @@
+<script setup lang="ts">
+const { t } = useI18n({
+  useScope: 'local'
+})
+
+useSeoMeta({
+  title: 'Things I use',
+  description: t('description')
+})
+
+const { data: items } = await useAsyncData('uses', () => queryContent('/uses').find()
+)
+
+const hardware = items.value!.filter(item => item.category === 'hardware')
+const software = items.value!.filter(item => item.category === 'software')
+const ide = items.value!.filter(item => item.category === 'ide')
+const stack = items.value!.filter(item => item.category === 'stack')
+</script>
+
+<template>
+  <main>
+    <AppTitle
+      :description="t('description')"
+      :title="t('title')"
+    />
+    <div class="mt-12 space-y-24">
+      <UsesList :title="t('hardware')">
+        <UsesItem
+          v-for="(item, id) in hardware"
+          :key="id"
+          :item="item"
+        />
+      </UsesList>
+      <UsesList :title="t('software')">
+        <UsesItem
+          v-for="(item, id) in software"
+          :key="id"
+          :item="item"
+        />
+      </UsesList>
+      <ul class="space-y-8">
+        <UDivider
+          :label="t('ide')"
+          size="xs"
+        />
+        <li class="relative">
+          <NuxtImg
+            alt="My IntelliJ IDE"
+            src="/uses/jetbrains.png"
+            class="mx-auto md:w-4/5"
+          />
+          <p class="mt-2 text-sm italic flex gap-2 justify-center items-center">
+            {{ t('intellij') }}
+          </p>
+        </li>
+        <UsesItem
+          v-for="(item, id) in ide"
+          :key="id"
+          :item="item"
+        />
+      </ul>
+      <UsesList :title="t('stack')">
+        <UsesItem
+          v-for="(item, id) in stack"
+          :key="id"
+          :item="item"
+        />
+      </UsesList>
+    </div>
+  </main>
+</template>
+
+<i18n lang="json">
+{
+  "en": {
+    "title": "Uses",
+    "description": "Software I use, gadgets I love, and other things I recommend. Here’s a big list of all of my favorite stuff.",
+    "hardware": "Hardware",
+    "software": "Software",
+    "ide": "IDE & Font",
+    "stack": "Stack",
+    "intellij": "My IntelliJ Idea Ultimate IDE"
+  },
+ "vi": {
+  "title": "Sử dụng",
+  "description": "Phần mềm tôi sử dụng, các thiết bị tôi yêu thích, và những thứ khác tôi khuyên dùng. Đây là một danh sách lớn tất cả những thứ yêu thích của tôi.",
+  "hardware": "Phần cứng",
+  "software": "Phần mềm",
+  "ide": "IDE & Phông chữ",
+  "stack": "Ngăn xếp công nghệ",
+  "intellij": "IDE IntelliJ Idea Ultimate của tôi"
+}
+
+}
+</i18n>
